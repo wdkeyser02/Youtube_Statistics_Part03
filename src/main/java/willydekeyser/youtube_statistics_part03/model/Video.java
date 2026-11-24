@@ -2,8 +2,7 @@ package willydekeyser.youtube_statistics_part03.model;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Video {
@@ -14,28 +13,22 @@ public class Video {
     private String kind;
     private String etag;
     private String videoid;
-    @OneToOne(mappedBy = "video", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Snippet snippet;
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL)
-    private Set<Statistics> statistics;
-    @OneToOne(mappedBy = "video", cascade = CascadeType.ALL)
+    private List<Statistics> statistics = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL)
     private ContentDetails contentDetails;
 
     public Video() {
-    }
-
-    public Video(String kind, String etag, String videoid, ContentDetails contentDetails) {
-        this.kind = kind;
-        this.etag = etag;
-        this.videoid = videoid;
-
-        this.contentDetails = contentDetails;
     }
 
     public Video(String kind, String etag, String videoid, String duration) {
         this.kind = kind;
         this.etag = etag;
         this.videoid = videoid;
+        this.snippet = new Snippet("Title", "Description", "PublishedAt", "ChannelTitle");
+        //this.statistics.add(new Statistics("ViewCount", "LikeCount", "CommentCount"));
         this.contentDetails = new ContentDetails(duration);
     }
 
@@ -79,11 +72,11 @@ public class Video {
         this.snippet = snippet;
     }
 
-    public Set<Statistics> getStatistics() {
+    public List<Statistics> getStatistics() {
         return statistics;
     }
 
-    public void setStatistics(Set<Statistics> statistics) {
+    public void setStatistics(List<Statistics> statistics) {
         this.statistics = statistics;
     }
 

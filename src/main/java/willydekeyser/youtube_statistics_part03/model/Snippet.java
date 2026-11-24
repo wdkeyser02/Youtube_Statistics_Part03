@@ -8,13 +8,13 @@ public class Snippet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne
-    private Video video;
     private String title;
     @Lob
     private String description;
     private String publishedAt;
     private String channelTitle;
+    @OneToOne(mappedBy = "snippet", cascade = CascadeType.ALL)
+    private Video video;
 
     public Snippet() {
     }

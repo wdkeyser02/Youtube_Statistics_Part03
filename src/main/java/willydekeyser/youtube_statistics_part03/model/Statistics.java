@@ -8,11 +8,13 @@ public class Statistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne
-    private Video video;
     private String viewCount;
     private String likeCount;
     private String commentCount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Video video;
+
 
     public Statistics() {
     }
@@ -29,14 +31,6 @@ public class Statistics {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Video getVideo() {
-        return video;
-    }
-
-    public void setVideo(Video video) {
-        this.video = video;
     }
 
     public String getViewCount() {

@@ -9,8 +9,7 @@ public class ContentDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String duration;
-    @OneToOne
-    @JoinColumn(name = "video_id", unique = true)
+    @OneToOne(mappedBy = "contentDetails", cascade = CascadeType.ALL)
     private Video video;
 
     public ContentDetails() {
