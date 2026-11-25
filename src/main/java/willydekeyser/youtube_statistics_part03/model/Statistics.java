@@ -11,8 +11,7 @@ public class Statistics {
     private String viewCount;
     private String likeCount;
     private String commentCount;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     private Video video;
 
 

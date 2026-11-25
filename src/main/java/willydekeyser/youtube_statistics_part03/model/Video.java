@@ -15,7 +15,7 @@ public class Video {
     private String videoid;
     @OneToOne(cascade = CascadeType.ALL)
     private Snippet snippet;
-    @OneToMany(mappedBy = "video", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Statistics> statistics = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL)
     private ContentDetails contentDetails;
@@ -23,12 +23,12 @@ public class Video {
     public Video() {
     }
 
-    public Video(String kind, String etag, String videoid, String duration) {
+    public Video(String kind, String etag, String videoid, Snippet snippet, Statistics statistics, String duration) {
         this.kind = kind;
         this.etag = etag;
         this.videoid = videoid;
-        this.snippet = new Snippet("Title", "Description", "PublishedAt", "ChannelTitle");
-        //this.statistics.add(new Statistics("ViewCount", "LikeCount", "CommentCount"));
+        this.snippet = new Snippet(snippet.getTitle(), snippet.getDescription(), snippet.getPublishedAt(), snippet.getChannelTitle());
+        this.statistics.add(new Statistics(statistics.getViewCount(), statistics.getLikeCount(), statistics.getCommentCount()));
         this.contentDetails = new ContentDetails(duration);
     }
 
