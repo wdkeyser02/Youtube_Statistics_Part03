@@ -12,7 +12,7 @@
         input { width: 250px; }
         button { width: 150px; }
         form {margin: 10px;}
-        #channel-info, #video-info, p, h3 {text-align: left;}
+        #video-info, p, h3 {text-align: left;}
         #toggle_button {
             position: absolute;
             right: 100px;
@@ -64,13 +64,13 @@
     <button type="submit">Get Video info</button>
 </form>
 
-<p hx-target="#video-info" hx-get="http://localhost:8090/api/video-info?videoId=vRQgnSHaGak"
-   hx-trigger="load, every 5s"
+<p hx-target="#video-info" hx-get="http://localhost:8090/api/video-info?videoId=Wb8Tq_HD4E8"
+   hx-trigger="load, every 30s"
    hx-swap="innerHTML"></p>
 
 <p hx-get="/chart-data"
         hx-target="#chart-data"
-        hx-trigger="load, every 5s"
+        hx-trigger="load, every 30s"
         hx-swap="innerHTML">
 </p>
 <template id="chart-data"></template>
@@ -108,7 +108,5 @@
         element_div.forEach(element => {element.classList.toggle("dark-mode_border");});
     }
 </script>
-
-
 </body>
 </html>

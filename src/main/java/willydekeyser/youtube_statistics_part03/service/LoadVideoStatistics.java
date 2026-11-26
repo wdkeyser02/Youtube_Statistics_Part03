@@ -20,7 +20,7 @@ public class LoadVideoStatistics {
         this.youTubeStatisticsRepository = youTubeStatisticsRepository;
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 60000)
     public void loadVideos() {
         List<Video> videos = youTubeStatisticsRepository.findAll();
         videos.forEach(video -> {
