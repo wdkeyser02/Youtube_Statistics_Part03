@@ -1,10 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Spring Boot Tutorials</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@latest/dist/htmx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx-json@latest/dist/htmx-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; color: black; margin: 30px; text-align: center;}
+        label { display:inline-block; width: 150px; text-align:right;}
+        input { width: 250px; }
+        button { width: 150px; }
+        form {margin: 10px;}
+        #channel-info, #video-info, p, h3 {text-align: left;}
+        #toggle_button {
+            position: absolute;
+            right: 100px;
+            height: 30px;
+        }
+        p{
+            line-height: 1.0;
+            margin: 3px;
+        }
+        div {
+            display:inline-block;
+            width: 700px;
+            border: 5px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 12px;
+        }
+        .canvas {
+            border: 5px solid black;
+            border-radius: 10px;
+            display:inline-block;
+            width: 800px;
+            height: 400px;
+        }
+        .dark-mode_border {
+            border: 5px solid white;
+        }
+        .dark-mode {
+            background-color: black;
+            color: white;
+        }
+    </style>
 </head>
 <body>
+<button onclick="myToggleFunction()" id="toggle_button">Toggle dark mode</button>
 <h1>Spring Boot Tutorial</h1>
+<form hx-get="http://localhost:8090/api/video-info"
+      hx-target="#video-info"
+      hx-swap="json">
+    <label for="video_Id">Video info: </label>
+    <input  id="video_Id"
+            type="text"
+            name="video_Id"
+            value="Load..."
+            hx-get="/api/video-info-input"
+            hx-trigger="load delay:5s"
+            hx-target="#video_Id"
+            hx-swap="outerHTML" />
+    <button type="submit">Get Video info</button>
+</form>
+
+<p hx-target="#video-info" hx-get="http://localhost:8090/api/video-info?videoId=vRQgnSHaGak"
+   hx-trigger="load, every 5s"
+   hx-swap="innerHTML"></p>
+
+<p hx-get="/chart-data"
+        hx-target="#chart-data"
+        hx-trigger="load, every 5s"
+        hx-swap="innerHTML">
+</p>
+<template id="chart-data"></template>
+<div class="canvas">
+    <canvas id="salesChart"></canvas>
+</div>
+<h3>Video Info: </h3>
+<div id="video-info">
+
+</div>
+<script>
+    let chart;
+    const myData = document.getElementById("chart-data");
+    chart = new Chart(document.querySelector("#salesChart"), {
+        type: "bar",
+        data: {
+            labels: [],
+            datasets: [{
+                label: "Video Statistics",
+                data: []
+            }]
+        }
+    });
+    myData.addEventListener("htmx:afterSwap", (event) => {
+        if (event.detail.target.id !== "chart-data") return;
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = values;
+        chart.update();
+    });
+
+    function myToggleFunction() {
+        const element_body = document.body;
+        element_body.classList.toggle("dark-mode");
+        const element_div = document.querySelectorAll("div");
+        element_div.forEach(element => {element.classList.toggle("dark-mode_border");});
+    }
+</script>
+
+
 </body>
 </html>

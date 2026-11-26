@@ -6,22 +6,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import willydekeyser.youtube_statistics_part03.mapper.VideoMapper;
 import willydekeyser.youtube_statistics_part03.model.dto.YouTubeVideoApiResponse;
-import willydekeyser.youtube_statistics_part03.service.LoadVideos;
+import willydekeyser.youtube_statistics_part03.repository.YouTubeStatisticsRepository;
 import willydekeyser.youtube_statistics_part03.service.YouTubeService;
-
-import java.util.List;
 
 @SpringBootApplication
 @EnableScheduling
 public class YoutubeStatisticsPart03Application {
 
-	private final LoadVideos loadVideos;
 	private final YouTubeService youTubeService;
+	private final YouTubeStatisticsRepository youTubeStatisticsRepository;
+	private final VideoMapper videoMapper;
 
-    public YoutubeStatisticsPart03Application(LoadVideos loadVideos, YouTubeService youTubeService) {
-        this.loadVideos = loadVideos;
+    public YoutubeStatisticsPart03Application(YouTubeService youTubeService, YouTubeStatisticsRepository youTubeStatisticsRepository, VideoMapper videoMapper) {
         this.youTubeService = youTubeService;
+        this.youTubeStatisticsRepository = youTubeStatisticsRepository;
+        this.videoMapper = videoMapper;
     }
 
     public static void main(String[] args) {
@@ -32,11 +33,11 @@ public class YoutubeStatisticsPart03Application {
     CommandLineRunner runner(StandardServletMultipartResolver standardServletMultipartResolver) {
 		return args -> {
 			System.out.println("CommandLineRunner running in the UnsplashApplication class...");
-			YouTubeVideoApiResponse.VideoItem response = youTubeService.getVideoDetails("mF0qh_9hwjM");
+			YouTubeVideoApiResponse.VideoItem response = youTubeService.getVideoDetails("Wb8Tq_HD4E8");
+			youTubeStatisticsRepository.save(videoMapper.Dto_to_Video(response));
 
-			loadVideos.loadVideos();
-
-
+			response = youTubeService.getVideoDetails("izXcd-bU72k");
+			youTubeStatisticsRepository.save(videoMapper.Dto_to_Video(response));
 		};
 	}
 

@@ -2,6 +2,8 @@ package willydekeyser.youtube_statistics_part03.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Statistics {
 
@@ -11,6 +13,7 @@ public class Statistics {
     private String viewCount;
     private String likeCount;
     private String commentCount;
+    private LocalDateTime dateTime;
     @ManyToOne()
     private Video video;
 
@@ -22,6 +25,7 @@ public class Statistics {
         this.viewCount = viewCount;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
+        this.dateTime = LocalDateTime.now();
     }
 
     public long getId() {
@@ -49,20 +53,32 @@ public class Statistics {
     }
 
     public String getCommentCount() {
+
         return commentCount;
     }
 
     public void setCommentCount(String commentCount) {
+
         this.commentCount = commentCount;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
     }
 
     @Override
     public String toString() {
         return "Statistics{" +
                 "id=" + id +
+                ", dateTime=" + dateTime +
                 ", viewCount='" + viewCount + '\'' +
                 ", likeCount='" + likeCount + '\'' +
                 ", commentCount='" + commentCount + '\'' +
                 '}';
     }
+
 }

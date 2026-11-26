@@ -23,13 +23,15 @@ public class Video {
     public Video() {
     }
 
-    public Video(String kind, String etag, String videoid, Snippet snippet, Statistics statistics, String duration) {
+    public Video(String kind, String etag, String videoid, Snippet snippet, List<Statistics> statistics, String duration) {
         this.kind = kind;
         this.etag = etag;
         this.videoid = videoid;
         this.snippet = new Snippet(snippet.getTitle(), snippet.getDescription(), snippet.getPublishedAt(), snippet.getChannelTitle());
-        this.statistics.add(new Statistics(statistics.getViewCount(), statistics.getLikeCount(), statistics.getCommentCount()));
         this.contentDetails = new ContentDetails(duration);
+        if (statistics != null) {
+            statistics.forEach(this::addStatistics);
+        }
     }
 
     public Long getId() {
@@ -88,6 +90,11 @@ public class Video {
         this.contentDetails = contentDetails;
     }
 
+    public void addStatistics(Statistics statistics) {
+        this.statistics.add(statistics);
+        statistics.setVideo(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -112,4 +119,5 @@ public class Video {
                 ", contentDetails=" + contentDetails +
                 '}';
     }
+
 }

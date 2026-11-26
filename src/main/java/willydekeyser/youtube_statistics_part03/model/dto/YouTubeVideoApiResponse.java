@@ -26,6 +26,7 @@ public record YouTubeVideoApiResponse(
 
         @JsonIgnoreProperties(ignoreUnknown = true)
         public record Statistics (
+                String dateTime,
                 String viewCount,
                 String likeCount,
                 String commentCount) {}

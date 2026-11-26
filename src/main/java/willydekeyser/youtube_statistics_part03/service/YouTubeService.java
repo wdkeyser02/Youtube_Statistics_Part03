@@ -42,7 +42,7 @@ public class YouTubeService {
 
         if (response != null && response.items() != null && !response.items().isEmpty()) {
 
-            youTubeStatisticsRepository.save(videoMapper.toVideo(response.items().getFirst()));
+            // youTubeStatisticsRepository.save(videoMapper.toVideo(response.items().getFirst()));
             return response.items().getFirst();
         }
 
