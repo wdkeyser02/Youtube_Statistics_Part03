@@ -32,12 +32,17 @@ public class YoutubeStatisticsPart03Application {
 	@Bean
     CommandLineRunner runner(StandardServletMultipartResolver standardServletMultipartResolver) {
 		return args -> {
-			System.out.println("CommandLineRunner running in the UnsplashApplication class...");
-			YouTubeVideoApiResponse.VideoItem response = youTubeService.getVideoDetails("Wb8Tq_HD4E8");
-			youTubeStatisticsRepository.save(videoMapper.Dto_to_Video(response));
+			System.out.println("CommandLineRunner running in the YoutubeStatisticsPart03Application...");
+			YouTubeVideoApiResponse.VideoItem response;
+			if (!youTubeStatisticsRepository.existsByVideoid("Wb8Tq_HD4E8")) {
+				response = youTubeService.getVideoDetails("Wb8Tq_HD4E8");
+				youTubeStatisticsRepository.save(videoMapper.Dto_to_Video(response));
 
-			response = youTubeService.getVideoDetails("izXcd-bU72k");
-			youTubeStatisticsRepository.save(videoMapper.Dto_to_Video(response));
+			}
+			if (!youTubeStatisticsRepository.existsByVideoid("izXcd-bU72k")) {
+				response = youTubeService.getVideoDetails("izXcd-bU72k");
+				youTubeStatisticsRepository.save(videoMapper.Dto_to_Video(response));
+			}
 		};
 	}
 

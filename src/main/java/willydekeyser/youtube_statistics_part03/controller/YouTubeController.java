@@ -20,7 +20,6 @@ public class YouTubeController {
     private final YouTubeStatisticsRepository youTubeStatisticsRepository;
 
     public YouTubeController(YouTubeStatisticsRepository youTubeStatisticsRepository) {
-
         this.youTubeStatisticsRepository = youTubeStatisticsRepository;
     }
 
