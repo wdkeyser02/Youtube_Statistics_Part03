@@ -65,12 +65,12 @@
 </form>
 
 <p hx-target="#video-info" hx-get="http://localhost:8090/api/video-info?videoId=Wb8Tq_HD4E8"
-   hx-trigger="load, every 30s"
+   hx-trigger="load, every 5m"
    hx-swap="innerHTML"></p>
 
 <p hx-get="/chart-data"
         hx-target="#chart-data"
-        hx-trigger="load, every 30s"
+        hx-trigger="load, every 60s"
         hx-swap="innerHTML">
 </p>
 <template id="chart-data"></template>
@@ -91,7 +91,7 @@
             datasets: [{
                 label: "Video Statistics",
                 data: [],
-                backgroundColor: '#0000ff',
+                backgroundColor: '#0000ff'
             }]
         }
     });

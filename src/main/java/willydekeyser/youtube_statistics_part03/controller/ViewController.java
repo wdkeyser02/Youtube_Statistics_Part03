@@ -10,6 +10,7 @@ import willydekeyser.youtube_statistics_part03.repository.YouTubeStatisticsRepos
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Controller
 public class ViewController {
@@ -36,6 +37,12 @@ public class ViewController {
                     .toList();
             values = video.getStatistics().stream()
                     .map(Statistics::getViewCount)
+                    .toList();
+
+            values = IntStream.range(1, video.getStatistics().size())
+                    .map(i -> Integer.parseInt(video.getStatistics().get(i).getViewCount())
+                            - Integer.parseInt(video.getStatistics().get(i - 1).getViewCount()))
+                    .mapToObj(String::valueOf)
                     .toList();
         }
         model.addAttribute("labels", labels);
