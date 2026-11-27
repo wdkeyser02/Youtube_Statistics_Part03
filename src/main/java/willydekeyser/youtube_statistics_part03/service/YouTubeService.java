@@ -20,12 +20,9 @@ public class YouTubeService {
     private String apiVideoUrl; // https://www.googleapis.com/youtube/v3/videos
 
     private final RestClient restClient = RestClient.create();
-    private final YouTubeStatisticsRepository youTubeStatisticsRepository;
-    private final VideoMapper videoMapper;
 
-    public YouTubeService(YouTubeStatisticsRepository youTubeStatisticsRepository, VideoMapper videoMapper) {
-        this.youTubeStatisticsRepository = youTubeStatisticsRepository;
-        this.videoMapper = videoMapper;
+    public YouTubeService() {
+
     }
 
     public YouTubeVideoApiResponse.VideoItem getVideoDetails(String videoId) {
@@ -41,8 +38,6 @@ public class YouTubeService {
                 .body(YouTubeVideoApiResponse.class);
 
         if (response != null && response.items() != null && !response.items().isEmpty()) {
-
-            // youTubeStatisticsRepository.save(videoMapper.toVideo(response.items().getFirst()));
             return response.items().getFirst();
         }
 

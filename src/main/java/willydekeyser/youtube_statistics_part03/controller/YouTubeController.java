@@ -14,16 +14,13 @@ import java.util.List;
 @RestController
 public class YouTubeController {
 
-    @Value("${youtube.api.video.id}")
-    private String apiVideoId; // vRQgnSHaGak
-
     private final YouTubeStatisticsRepository youTubeStatisticsRepository;
 
     public YouTubeController(YouTubeStatisticsRepository youTubeStatisticsRepository) {
         this.youTubeStatisticsRepository = youTubeStatisticsRepository;
     }
 
-    @GetMapping("/api/video-info") // http://localhost:8080/api/video-info?videoId=vRQgnSHaGak
+    @GetMapping("/api/video-info")
     public List<YouTubeVideoApiResponse.VideoItem.Statistics> getVideoInfo(@RequestParam String videoId) {
         Video video = youTubeStatisticsRepository.findByVideoid(videoId);
         if (video == null) {
@@ -34,10 +31,5 @@ public class YouTubeController {
                 .map(stat -> new YouTubeVideoApiResponse.VideoItem.Statistics(stat.getDateTime().toString(), stat.getViewCount(),
                         stat.getLikeCount(), stat.getCommentCount()))
                 .toList();
-    }
-
-    @GetMapping("/api/video-info-input") // vRQgnSHaGak
-    public String getInputVideoInfo() {
-        return "<input type=\"text\" id=\"videoId\" name=\"videoId\" value=" + apiVideoId + " size=\"50\">";
     }
 }

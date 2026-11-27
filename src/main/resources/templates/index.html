@@ -34,8 +34,8 @@
             border: 5px solid black;
             border-radius: 10px;
             display:inline-block;
-            width: 1000px;
-            height: 500px;
+            width: 1500px;
+            height: 800px;
         }
         .chart_small {
             display:inline-block;
@@ -56,23 +56,25 @@
 </head>
 <body>
 <input type="hidden" id="hidden_input" value="views">
-<input type="hidden" id="hidden_video_input" value="Wb8Tq_HD4E8">
+<input type="hidden" id="hidden_video1_input" value=${video1}>
+<input type="hidden" id="hidden_video2_input" value=${video2}>
+<input type="hidden" id="hidden_video3_input" value=${video3}>
 <button id="toggle_mode_button">Toggle dark mode</button>
 <h1>Spring Boot Tutorial</h1>
-<form hx-get="http://localhost:8090/api/video-info"
-      hx-target="#video-info"
-      hx-swap="json">
-    <label for="video_Id">Video info: </label>
-    <input  id="video_Id"
-            type="text"
-            name="video_Id"
-            value="Video Id..."/>
-    <button type="submit">Get Video info</button>
-</form>
-
-<template hx-target="#video-info"
+<h2>YouTube video Statistics</h2>
+<template hx-target="#video1-info"
           hx-get="http://localhost:8090/api/video-info"
-          hx-vals='js:{videoId: document.getElementById("hidden_video_input").value}'
+          hx-vals='js:{videoId: document.getElementById("hidden_video1_input").value}'
+          hx-trigger="load, click, every 5m"
+          hx-swap="innerHTML"></template>
+<template hx-target="#video2-info"
+          hx-get="http://localhost:8090/api/video-info"
+          hx-vals='js:{videoId: document.getElementById("hidden_video2_input").value}'
+          hx-trigger="load, click, every 5m"
+          hx-swap="innerHTML"></template>
+<template hx-target="#video3-info"
+          hx-get="http://localhost:8090/api/video-info"
+          hx-vals='js:{videoId: document.getElementById("hidden_video3_input").value}'
           hx-trigger="load, click, every 5m"
           hx-swap="innerHTML"></template>
 
@@ -92,9 +94,11 @@
     <button id="toggle_width_button">Small</button>
 </p>
 <h3>Video Info: </h3>
-<div id="video-info">
+<div id="video1-info"></div>
+<div id="video2-info"></div>
+<div id="video3-info"></div>
 
-</div>
+
 <script>
     document.querySelector("#toggle_chart_button").addEventListener("click", () => {
         const val = document.getElementById('hidden_input').value;
@@ -109,16 +113,26 @@
         data: {
             labels: [],
             datasets: [{
-                label: "Video Statistics from: " + document.getElementById('hidden_video_input').value,
+                label: "Video Statistics from: " + document.getElementById('hidden_video1_input').value,
                 data: [],
                 backgroundColor: '#0000ff'
+            },{
+                label: "Video Statistics from: " + document.getElementById('hidden_video2_input').value,
+                data: [],
+                backgroundColor: '#ff0000'
+            },{
+                label: "Video Statistics from: " + document.getElementById('hidden_video3_input').value,
+                data: [],
+                backgroundColor: '#00ff00'
             }]
         }
     });
     myData.addEventListener("htmx:afterSwap", (event) => {
         if (event.detail.target.id !== "chart-data") return;
         chart.data.labels = labels;
-        chart.data.datasets[0].data = values;
+        chart.data.datasets[0].data = values1;
+        chart.data.datasets[1].data = values2;
+        chart.data.datasets[2].data = values3;
         chart.update();
     });
     document.querySelector("#toggle_mode_button").addEventListener("click", () => {
