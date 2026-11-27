@@ -13,7 +13,7 @@
         button { width: 150px; }
         form {margin: 10px;}
         #video-info, p, h3 {text-align: left;}
-        #toggle_button {
+        #toggle_mode_button {
             position: absolute;
             right: 100px;
             height: 30px;
@@ -30,12 +30,17 @@
             padding: 10px;
             font-size: 12px;
         }
-        .canvas {
+        .chart {
             border: 5px solid black;
             border-radius: 10px;
             display:inline-block;
             width: 1000px;
             height: 500px;
+        }
+        .chart_small {
+            display:inline-block;
+            width: 600px;
+            height: 300px;
         }
         .dark-mode_border {
             border: 5px solid white;
@@ -44,10 +49,15 @@
             background-color: black;
             color: white;
         }
+        .center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-<button onclick="myToggleFunction()" id="toggle_button">Toggle dark mode</button>
+<input type="hidden" id="hidden_input" value="views">
+<input type="hidden" id="hidden_video_input" value="Wb8Tq_HD4E8">
+<button id="toggle_mode_button">Toggle dark mode</button>
 <h1>Spring Boot Tutorial</h1>
 <form hx-get="http://localhost:8090/api/video-info"
       hx-target="#video-info"
@@ -56,40 +66,50 @@
     <input  id="video_Id"
             type="text"
             name="video_Id"
-            value="Load..."
-            hx-get="/api/video-info-input"
-            hx-trigger="load delay:5s"
-            hx-target="#video_Id"
-            hx-swap="outerHTML" />
+            value="Video Id..."/>
     <button type="submit">Get Video info</button>
 </form>
 
-<p hx-target="#video-info" hx-get="http://localhost:8090/api/video-info?videoId=Wb8Tq_HD4E8"
-   hx-trigger="load, every 5m"
-   hx-swap="innerHTML"></p>
+<template hx-target="#video-info"
+          hx-get="http://localhost:8090/api/video-info"
+          hx-vals='js:{videoId: document.getElementById("hidden_video_input").value}'
+          hx-trigger="load, click, every 5m"
+          hx-swap="innerHTML"></template>
 
-<p hx-get="/chart-data"
-        hx-target="#chart-data"
-        hx-trigger="load, every 60s"
-        hx-swap="innerHTML">
-</p>
+<template id="load_chart"
+          hx-get="/chart-data"
+          hx-target="#chart-data"
+          hx-trigger="load, click, every 60s"
+          hx-swap="innerHTML"
+          hx-vals='js:{chartOptions: document.getElementById("hidden_input").value}'></template>
+
 <template id="chart-data"></template>
-<div class="canvas">
-    <canvas id="salesChart"></canvas>
+<div id="chart" class="chart">
+    <canvas id="videoChart"></canvas>
 </div>
+<p class="center">
+    <button id="toggle_chart_button">Total</button>
+    <button id="toggle_width_button">Small</button>
+</p>
 <h3>Video Info: </h3>
 <div id="video-info">
 
 </div>
 <script>
-    let chart;
+    document.querySelector("#toggle_chart_button").addEventListener("click", () => {
+        const val = document.getElementById('hidden_input').value;
+        document.getElementById('hidden_input').value = val === "total" ? "views" : "total";
+        htmx.trigger("#load_chart", "click");
+        document.getElementById('toggle_chart_button').textContent =
+            val === "total" ? "Total" : "Views";
+    });
     const myData = document.getElementById("chart-data");
-    chart = new Chart(document.querySelector("#salesChart"), {
+    const chart = new Chart(document.querySelector("#videoChart"), {
         type: "bar",
         data: {
             labels: [],
             datasets: [{
-                label: "Video Statistics",
+                label: "Video Statistics from: " + document.getElementById('hidden_video_input').value,
                 data: [],
                 backgroundColor: '#0000ff'
             }]
@@ -101,13 +121,18 @@
         chart.data.datasets[0].data = values;
         chart.update();
     });
-
-    function myToggleFunction() {
+    document.querySelector("#toggle_mode_button").addEventListener("click", () => {
         const element_body = document.body;
         element_body.classList.toggle("dark-mode");
         const element_div = document.querySelectorAll("div");
         element_div.forEach(element => {element.classList.toggle("dark-mode_border");});
-    }
+    });
+    document.querySelector("#toggle_width_button").addEventListener("click", () => {
+        const element_body = document.getElementById('chart');
+        element_body.classList.toggle("chart_small");
+        document.getElementById('toggle_width_button').textContent =
+            document.getElementById('toggle_width_button').textContent === "Large" ? "Small" : "Large";
+    });
 </script>
 </body>
 </html>
