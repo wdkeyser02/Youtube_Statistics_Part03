@@ -16,11 +16,11 @@ import willydekeyser.youtube_statistics_part03.service.YouTubeService;
 public class YoutubeStatisticsPart03Application {
 
 	@Value("${youtube.api.video1.id}")
-	private String apiVideo1Id; // vRQgnSHaGak
+	private String apiVideo1Id;
 	@Value("${youtube.api.video2.id}")
-	private String apiVideo2Id; // vRQgnSHaGak
+	private String apiVideo2Id;
 	@Value("${youtube.api.video3.id}")
-	private String apiVideo3Id; // vRQgnSHaGak
+	private String apiVideo3Id;
 
 	private final YouTubeService youTubeService;
 	private final YouTubeStatisticsRepository youTubeStatisticsRepository;
