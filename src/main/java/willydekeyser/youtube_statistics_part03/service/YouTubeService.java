@@ -4,11 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
-import willydekeyser.youtube_statistics_part03.mapper.VideoMapper;
-import willydekeyser.youtube_statistics_part03.model.ContentDetails;
-import willydekeyser.youtube_statistics_part03.model.Video;
 import willydekeyser.youtube_statistics_part03.model.dto.YouTubeVideoApiResponse;
-import willydekeyser.youtube_statistics_part03.repository.YouTubeStatisticsRepository;
 
 @Service
 public class YouTubeService {
