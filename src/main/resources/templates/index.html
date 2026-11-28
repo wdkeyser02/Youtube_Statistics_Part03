@@ -12,7 +12,6 @@
         input { width: 250px; }
         button { width: 150px; }
         form {margin: 10px;}
-        #video-info, p, h3 {text-align: left;}
         #toggle_mode_button {
             position: absolute;
             right: 100px;
@@ -56,9 +55,9 @@
 </head>
 <body>
 <input type="hidden" id="hidden_input" value="views">
-<input type="hidden" id="hidden_video1_input" value=${video1}>
-<input type="hidden" id="hidden_video2_input" value=${video2}>
-<input type="hidden" id="hidden_video3_input" value=${video3}>
+<input type="hidden" id="hidden_video1_input" th:value="${video1}">
+<input type="hidden" id="hidden_video2_input" th:value="${video2}">
+<input type="hidden" id="hidden_video3_input" th:value="${video3}">
 <button id="toggle_mode_button">Toggle dark mode</button>
 <h1>Spring Boot Tutorial</h1>
 <h2>YouTube video Statistics</h2>
@@ -125,6 +124,14 @@
                 data: [],
                 backgroundColor: '#00ff00'
             }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'YouTube Statistics'
+                }
+            }
         }
     });
     myData.addEventListener("htmx:afterSwap", (event) => {
@@ -133,6 +140,7 @@
         chart.data.datasets[0].data = values1;
         chart.data.datasets[1].data = values2;
         chart.data.datasets[2].data = values3;
+        chart.options.plugins.title.text = 'YouTube Statistics ' + document.getElementById('hidden_input').value;
         chart.update();
     });
     document.querySelector("#toggle_mode_button").addEventListener("click", () => {
